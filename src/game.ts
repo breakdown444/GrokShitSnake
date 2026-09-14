@@ -36,7 +36,7 @@ export class SnakeGame {
   queued: Dir | null = null
   phase: Phase = 'ready'
   score = 0
-  highScore = Number(localStorage.getItem('snake-high-score') ?? '0')
+  highScore = Number(localStorage.getItem('grok-shit-snake-high-score') ?? '0')
   tickMs = START_TICK_MS
 
   reset(): void {
@@ -94,7 +94,7 @@ export class SnakeGame {
       this.phase = 'dead'
       if (this.score > this.highScore) {
         this.highScore = this.score
-        localStorage.setItem('snake-high-score', String(this.highScore))
+        localStorage.setItem('grok-shit-snake-high-score', String(this.highScore))
       }
       return
     }

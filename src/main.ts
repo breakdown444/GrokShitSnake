@@ -10,7 +10,10 @@ app.innerHTML = `
         <p class="label">Score</p>
         <p id="score" class="value">0</p>
       </div>
-      <h1>Snake</h1>
+      <div class="titleblock">
+        <h1>GrokShitSnake</h1>
+        <p class="ver">0.1</p>
+      </div>
       <div>
         <p class="label">Best</p>
         <p id="best" class="value">0</p>
@@ -21,7 +24,7 @@ app.innerHTML = `
       <canvas id="board" width="640" height="640" aria-label="Snake board"></canvas>
       <div id="overlay" class="overlay">
         <p id="overlay-title">Ready</p>
-        <p id="overlay-sub">Press Enter, tap the board, or use the pad</p>
+        <p id="overlay-sub">Enter, tap, or mash GO. Try not to eat yourself.</p>
       </div>
     </div>
 
@@ -72,7 +75,7 @@ function syncHud(): void {
   overlay.classList.remove('hidden')
   if (game.phase === 'ready') {
     overlayTitle.textContent = 'Ready'
-    overlaySub.textContent = 'Press Enter, tap the board, or use the pad'
+    overlaySub.textContent = 'Enter, tap, or mash GO. Try not to eat yourself.'
   } else if (game.phase === 'paused') {
     overlayTitle.textContent = 'Paused'
     overlaySub.textContent = 'Space or GO to continue'

@@ -1,8 +1,10 @@
-# Snake
+# GrokShitSnake 0.1
 
-Arcade Snake in the browser. Steer with the keyboard, on-screen pad, or swipe.
+A shitty ass web browser version of snake Grok made for shits n giggles.
 
-## Run locally
+Arcade Snake in the browser. Steer with the keyboard, on-screen pad, or swipe. Eat the red pellets. Walls and your own tail end the run. Best score stays in this browser.
+
+## Play locally
 
 ```bash
 npm install
@@ -18,4 +20,13 @@ Open [http://127.0.0.1:43180](http://127.0.0.1:43180).
 - **Space** to pause
 - On a phone, swipe the board or use the pad
 
-Eat the red pellets. Hitting a wall or yourself ends the run. Best score is stored in this browser.
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+Pushing `main` deploys a static build to GitHub Pages (enable **Settings → Pages → Source: GitHub Actions**).
+
+Licensed under [GPL-3.0](LICENSE).
