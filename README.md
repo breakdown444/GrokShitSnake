@@ -1,52 +1,80 @@
 # GrokShitSnake
 
-A shitty ass web browser version of snake. Proudly presented to you by Trashbird.
+Browser arcade Snake. Proudly presented to you by Trashbird.
 
-**0.1.6** is a landscape handheld: free-roam poo, left/right steering, real 3D lumps, recorded farts, and an actual theme song.
+[![Version](https://img.shields.io/badge/version-0.1.6--beta-yellow)](CHANGELOG.md)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
+[![Play](https://img.shields.io/badge/play-live-3dff8a.svg)](https://breakdown444.github.io/GrokShitSnake/)
 
-The repo was renamed from `GrokShitSnake-0.1` to `GrokShitSnake`. **Nothing was deleted** — every shipped version is frozen under `/play/`.
+**0.1.6 Beta** is the current build. Next release is **1.0**.
 
-## Play on the web
+Play: [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/)  
+Archive: [every shipped version](https://breakdown444.github.io/GrokShitSnake/play/)
 
-| Version | Play |
+## What it is
+
+A landscape handheld cabinet. The lead end of a lumpy 3D stool steers with left and right only. Eat the red pellets. Walls and your own body end the run. Farts are recordings. The theme is an original 48-second track, ducked under the farts.
+
+## Controls
+
+| Input | Action |
 | --- | --- |
-| **Latest (0.1.6)** | [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/) |
-| Version picker | […/play](https://breakdown444.github.io/GrokShitSnake/play/) |
-| 0.1.6 | […/play/0.1.6](https://breakdown444.github.io/GrokShitSnake/play/0.1.6/) |
-| 0.1.5 | […/play/0.1.5](https://breakdown444.github.io/GrokShitSnake/play/0.1.5/) |
-| 0.1.4 | […/play/0.1.4](https://breakdown444.github.io/GrokShitSnake/play/0.1.4/) |
-| 0.1.3 | […/play/0.1.3](https://breakdown444.github.io/GrokShitSnake/play/0.1.3/) |
-| 0.1.2 | […/play/0.1.2](https://breakdown444.github.io/GrokShitSnake/play/0.1.2/) |
-| 0.1.1 | […/play/0.1.1](https://breakdown444.github.io/GrokShitSnake/play/0.1.1/) |
-| **0.1** (original) | […/play/0.1](https://breakdown444.github.io/GrokShitSnake/play/0.1/) |
+| Enter / GO | Start or restart |
+| Hold Left / A / mouse 1 | Turn counterclockwise |
+| Hold Right / D / mouse 2 | Turn clockwise |
+| Space | Pause |
 
-Source tags: [`v0.1.6`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.6) · [`v0.1.5`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.5) · [`v0.1.4`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.4) · [`v0.1.3`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.3) · [`v0.1.2`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.2) · [`v0.1.1`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.1) · [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.0)
+Sound unlocks on the first GO, key, or tap.
 
-## Play locally
+## Develop
+
+Requires Node 22+.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open [http://127.0.0.1:43180](http://127.0.0.1:43180). Frozen copies are at `/play/`.
-
-## Controls (0.1.6)
-
-- **Enter** or **GO** to start / restart
-- **Hold left / right** (arrows, A/D, on-screen L/R, mouse buttons) to turn. Left is counterclockwise, right is clockwise. No grid.
-- **Space** to pause
-- Sound starts on the first GO / key / tap. Farts are recordings. Music is a real theme, ducked under the farts.
-
-## Build
+Open [http://127.0.0.1:43180](http://127.0.0.1:43180).
 
 ```bash
+npm run typecheck
 npm run build
 npm run preview
 ```
 
-Pushing `main` deploys a static build to GitHub Pages, including every frozen version under `play/`.
+`base` is `./` so GitHub Pages and the frozen `/play/<version>/` copies both resolve assets relatively.
 
-See [CREDITS.md](CREDITS.md) for audio and texture sources.
+## Layout
 
-Licensed under [GPL-3.0](LICENSE).
+```
+src/game.ts      free-roam physics, growth, collisions
+src/render.ts    Three.js field, lumps, stains, lighting
+src/audio.ts     decoded fart samples + looping theme
+src/main.ts      cabinet chrome and input
+public/farts     CC0 recordings + studio Foley
+public/audio     theme
+public/textures  poop / floor / smear maps
+public/play      frozen playable builds (do not overwrite)
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
+
+## Versions
+
+Nothing was deleted when the repo was renamed from `GrokShitSnake-0.1`. Live root is always latest. Older cabinets stay at `/play/<version>/`.
+
+| Version | URL |
+| --- | --- |
+| **0.1.6 Beta** | [root](https://breakdown444.github.io/GrokShitSnake/) · [frozen](https://breakdown444.github.io/GrokShitSnake/play/0.1.6/) |
+| 0.1.5 … 0.1 | [picker](https://breakdown444.github.io/GrokShitSnake/play/) |
+
+Tags: [`v0.1.6`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.6) through [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.0).
+
+## Credits
+
+Audio and texture sources are in [CREDITS.md](CREDITS.md).
+
+## License
+
+[GPL-3.0](LICENSE).

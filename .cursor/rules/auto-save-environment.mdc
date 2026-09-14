@@ -1,0 +1,16 @@
+---
+description: After each finished iteration, snapshot this Cloud Agent environment so the next run boots warm.
+alwaysApply: true
+---
+
+# Auto-save the environment
+
+This project is expensive to redo. After a working iteration is committed and pushed:
+
+1. Leave `node_modules` installed. `install` is `npm ci`.
+2. Call `cursor-cloud-take-environment-snapshot`, then wait until `cursor-cloud-check-environment-snapshot` is `ready`.
+3. Call `cursor-cloud-propose-environment-json` with `install: npm ci` so the next agent can Save/reuse the snapshot.
+4. Do not spin extra game versions just to snapshot. Do not put tokens or secrets in `environment.json` or git.
+5. Keep the Vite dev server on port `43180` when a preview is needed.
+
+The user asked for this as a standing rule. Do it without asking.

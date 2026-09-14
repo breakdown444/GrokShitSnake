@@ -1,12 +1,34 @@
 {
   "name": "grok-shit-snake",
   "private": true,
-  "version": "0.1.6",
+  "version": "0.1.6-beta",
+  "description": "Browser arcade Snake by Trashbird. Landscape handheld, free-roam 3D poo, recorded farts, original theme.",
+  "license": "GPL-3.0-or-later",
+  "author": "Trashbird",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/breakdown444/GrokShitSnake.git"
+  },
+  "homepage": "https://breakdown444.github.io/GrokShitSnake/",
+  "bugs": {
+    "url": "https://github.com/breakdown444/GrokShitSnake/issues"
+  },
+  "keywords": [
+    "snake",
+    "game",
+    "three.js",
+    "webgl",
+    "vite"
+  ],
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 43180",
     "build": "tsc && vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 43180"
+    "preview": "vite preview --host 0.0.0.0 --port 43180",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/three": "^0.186.0",

@@ -12,8 +12,10 @@ app.innerHTML = `
         <p id="score" class="value">0</p>
       </div>
       <div class="titleblock">
+        <p class="beta-pill">Beta</p>
         <h1>GrokShitSnake 0.1.6</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
+        <p class="soul">Heart and soul edition. Next stop is 1.0.</p>
         <p class="versions"><a href="play/">All versions</a></p>
       </div>
       <div>
@@ -25,21 +27,23 @@ app.innerHTML = `
     <div class="gear">
       <div class="wing left">
         <button type="button" id="turn-left" aria-label="Turn left">L</button>
+        <div class="speaker" aria-hidden="true"></div>
         <button type="button" id="action" aria-label="Start or pause">GO</button>
       </div>
       <div class="screen">
         <canvas id="board" width="1280" height="720" aria-label="Poop field"></canvas>
         <div id="overlay" class="overlay">
-          <p id="overlay-title">Ready</p>
-          <p id="overlay-sub">Hold left and right. The lead end steers. Eat red. Don't eat you.</p>
+          <p id="overlay-title">Beta</p>
+          <p id="overlay-sub">The poo is 3D. The farts are real. Hold left and right like you mean it.</p>
         </div>
       </div>
       <div class="wing right">
+        <div class="speaker" aria-hidden="true"></div>
         <button type="button" id="turn-right" aria-label="Turn right">R</button>
       </div>
     </div>
 
-    <p class="hint">Hold ◀ / ▶ · A / D · mouse buttons · Enter to GO · Space to pause · real farts, real theme</p>
+    <p class="hint">Hold ◀ / ▶ · A / D · mouse buttons · Enter to GO · Space to pause · this is the beta</p>
   </main>
 `
 
@@ -70,14 +74,14 @@ function syncHud(): void {
   overlay.classList.toggle('hidden', game.phase === 'playing')
   if (game.phase === 'playing') return
   if (game.phase === 'ready') {
-    overlayTitle.textContent = 'Ready'
-    overlaySub.textContent = 'Hold left and right. The lead end steers. Eat red. Don\'t eat you.'
+    overlayTitle.textContent = 'Beta'
+    overlaySub.textContent = 'The poo is 3D. The farts are real. Hold left and right like you mean it.'
   } else if (game.phase === 'paused') {
-    overlayTitle.textContent = 'Paused'
-    overlaySub.textContent = 'Space or GO to continue'
+    overlayTitle.textContent = 'Bathroom break'
+    overlaySub.textContent = 'Space or GO when you have the guts to continue.'
   } else {
     overlayTitle.textContent = 'Game over'
-    overlaySub.textContent = `YOU SUCK!  Score ${game.score} · Enter to play again`
+    overlaySub.textContent = `YOU SUCK!  Score ${game.score} · Enter if you've got another one in you`
   }
 }
 
@@ -187,8 +191,8 @@ function bindButtons(): void {
 }
 
 async function boot(): Promise<void> {
-  overlayTitle.textContent = 'Loading'
-  overlaySub.textContent = 'Lighting the 3D poo…'
+    overlayTitle.textContent = 'Warming up'
+    overlaySub.textContent = 'Lighting the 3D poo. This is the beta. Treat it with love.'
   try {
     await view.init()
   } catch (err) {

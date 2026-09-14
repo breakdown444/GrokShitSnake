@@ -27,6 +27,31 @@ function lumpify(mat: THREE.MeshStandardMaterial): void {
   mat.customProgramCacheKey = () => 'poop-lumps-v1'
 }
 
+function makePlaque(): THREE.CanvasTexture {
+  const c = document.createElement('canvas')
+  c.width = 1024
+  c.height = 256
+  const g = c.getContext('2d')!
+  g.fillStyle = '#16100c'
+  g.fillRect(0, 0, 1024, 256)
+  g.strokeStyle = '#3dff8a'
+  g.lineWidth = 6
+  g.strokeRect(18, 18, 988, 220)
+  g.fillStyle = '#3dff8a'
+  g.font = '700 70px Trebuchet MS, sans-serif'
+  g.textAlign = 'center'
+  g.fillText('GROKSHITSNAKE', 512, 108)
+  g.fillStyle = '#ffd24a'
+  g.font = '800 46px Trebuchet MS, sans-serif'
+  g.fillText('BETA', 512, 168)
+  g.fillStyle = '#8fad9c'
+  g.font = '24px Trebuchet MS, sans-serif'
+  g.fillText('Trashbird  ·  heart & soul  ·  next stop 1.0', 512, 214)
+  const tex = new THREE.CanvasTexture(c)
+  tex.colorSpace = THREE.SRGBColorSpace
+  return tex
+}
+
 type Steam = {
   x: number
   y: number
@@ -54,6 +79,7 @@ export class GameRenderer {
   private dummy = new THREE.Object3D()
   private color = new THREE.Color()
   private loaded = false
+  private camNow = 0
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new THREE.WebGLRenderer({
@@ -68,10 +94,9 @@ export class GameRenderer {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping
     this.renderer.toneMappingExposure = 1.12
-    this.camera = new THREE.PerspectiveCamera(36, 16 / 9, 0.1, 80)
-    this.camera.position.set(0, 12.6, 8.8)
-    this.camera.lookAt(0, 0, 0.35)
-    this.scene.fog = new THREE.Fog(0x1a1612, 16, 34)
+    this.camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.1, 80)
+    this.frameCamera()
+    this.scene.fog = new THREE.Fog(0x1a1612, 18, 36)
   }
 
   async init(): Promise<void> {
@@ -89,7 +114,7 @@ export class GameRenderer {
     }
     poopMap.wrapS = poopMap.wrapT = THREE.RepeatWrapping
     poopNormal.wrapS = poopNormal.wrapT = THREE.RepeatWrapping
-      poopNormal.colorSpace = THREE.LinearSRGBColorSpace
+    poopNormal.colorSpace = THREE.LinearSRGBColorSpace
     floorMap.wrapS = floorMap.wrapT = THREE.RepeatWrapping
     floorMap.repeat.set(1.05, 1.05)
 
@@ -109,6 +134,9 @@ export class GameRenderer {
     const fill = new THREE.DirectionalLight(0x88a0c8, 0.35)
     fill.position.set(8, 6, -4)
     this.scene.add(fill)
+    const rim = new THREE.DirectionalLight(0xffc48a, 0.5)
+    rim.position.set(1.5, 5, -11)
+    this.scene.add(rim)
 
     const floorMat = new THREE.MeshStandardMaterial({
       map: floorMap,
@@ -135,6 +163,14 @@ export class GameRenderer {
     mkRail(0.22, WORLD_H + 0.5, WORLD_W / 2 + 0.08, 0)
     mkRail(0.22, WORLD_H + 0.5, -WORLD_W / 2 - 0.08, 0)
 
+    const plaque = new THREE.Mesh(
+      new THREE.PlaneGeometry(7.4, 1.35),
+      new THREE.MeshStandardMaterial({ map: makePlaque(), roughness: 0.62, metalness: 0.12 }),
+    )
+    plaque.position.set(0, 1.15, WORLD_H / 2 - 0.14)
+    plaque.rotation.y = Math.PI
+    this.scene.add(plaque)
+
     const poopMat = new THREE.MeshStandardMaterial({
       map: poopMap,
       normalMap: poopNormal,
@@ -152,6 +188,7 @@ export class GameRenderer {
     this.lumps.receiveShadow = true
     this.lumps.count = 0
     this.lumps.frustumCulled = false
+    this.lumps.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(MAX_LUMPS * 3).fill(1), 3)
     this.scene.add(this.lumps)
 
     this.bumps = new THREE.InstancedMesh(geo, bumpMat, MAX_BUMPS)
@@ -159,6 +196,7 @@ export class GameRenderer {
     this.bumps.receiveShadow = true
     this.bumps.count = 0
     this.bumps.frustumCulled = false
+    this.bumps.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(MAX_BUMPS * 3).fill(1), 3)
     this.scene.add(this.bumps)
 
     const stainMat = new THREE.MeshBasicMaterial({
@@ -172,6 +210,7 @@ export class GameRenderer {
     this.stains.count = 0
     this.stains.frustumCulled = false
     this.stains.renderOrder = 1
+    this.stains.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(MAX_STAINS * 3).fill(1), 3)
     this.scene.add(this.stains)
 
     const foodMat = new THREE.MeshPhysicalMaterial({
@@ -207,6 +246,14 @@ export class GameRenderer {
     this.loaded = true
   }
 
+  private frameCamera(): void {
+    const sway = Math.sin(this.camNow / 2400) * 0.16
+    const bob = Math.sin(this.camNow / 1900) * 0.07
+    this.camera.up.set(0, 0, 1)
+    this.camera.position.set(sway, 15.6 + bob, -7.2)
+    this.camera.lookAt(0, 0, 0)
+  }
+
   resize(): void {
     const canvas = this.renderer.domElement
     const parent = canvas.parentElement
@@ -214,6 +261,7 @@ export class GameRenderer {
     const w = Math.max(1, parent.clientWidth)
     const h = Math.max(1, parent.clientHeight)
     this.camera.aspect = w / h
+    this.frameCamera()
     this.camera.updateProjectionMatrix()
     this.renderer.setSize(w, h, false)
   }
@@ -325,6 +373,8 @@ export class GameRenderer {
     this.food.position.set(game.food.x, 0.28, game.food.y)
     this.foodLight.position.copy(this.food.position)
     this.foodLight.position.y = 0.7
+    this.camNow = now
+    this.frameCamera()
     this.tickSteam(game, now, playing)
   }
 
