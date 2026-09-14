@@ -4,7 +4,7 @@ All shipped playable builds stay frozen under [`/play`](https://breakdown444.git
 
 ## 0.1.6-beta — 2026-09-14
 
-Heart-and-soul beta. Next release is 1.0.
+Pre-release. Next release is 1.0.
 
 - Free-roam movement on a landscape field. Hold left/right to turn 360°.
 - 3D lumpy poo (Bristol-ish clumps, PBR textures, shadows, steam).

@@ -29,4 +29,4 @@ npm run build
 | `public/farts`, `public/audio`, `public/textures` | Runtime assets |
 | `public/play/<version>/` | Frozen shipped builds |
 
-Ship one version, finish it, then archive a copy into `public/play/<version>/` from `dist/` **without** nesting the older `/play` tree inside that copy.
+Ship one version, finish it, then archive a copy into `public/play/<version>/` from `dist/` **without** nesting the older `/play` tree inside that copy. Pre-releases use a SemVer identifier, e.g. `0.1.6-beta`.

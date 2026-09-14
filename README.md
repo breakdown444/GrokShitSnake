@@ -6,7 +6,7 @@ Browser arcade Snake. Proudly presented to you by Trashbird.
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
 [![Play](https://img.shields.io/badge/play-live-3dff8a.svg)](https://breakdown444.github.io/GrokShitSnake/)
 
-**0.1.6 Beta** is the current build. Next release is **1.0**.
+**0.1.6-beta** is the current pre-release. Next release is **1.0**.
 
 Play: [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/)  
 Archive: [every shipped version](https://breakdown444.github.io/GrokShitSnake/play/)
@@ -66,10 +66,10 @@ Nothing was deleted when the repo was renamed from `GrokShitSnake-0.1`. Live roo
 
 | Version | URL |
 | --- | --- |
-| **0.1.6 Beta** | [root](https://breakdown444.github.io/GrokShitSnake/) · [frozen](https://breakdown444.github.io/GrokShitSnake/play/0.1.6/) |
+| **0.1.6-beta** | [root](https://breakdown444.github.io/GrokShitSnake/) · [frozen](https://breakdown444.github.io/GrokShitSnake/play/0.1.6-beta/) |
 | 0.1.5 … 0.1 | [picker](https://breakdown444.github.io/GrokShitSnake/play/) |
 
-Tags: [`v0.1.6`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.6) through [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.0).
+Tags: [`v0.1.6-beta`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.6-beta) · [`v0.1.5`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.5) · [`v0.1.4`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.4) · [`v0.1.3`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.3) · [`v0.1.2`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.2) · [`v0.1.1`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.1) · [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.0).
 
 ## Credits
 

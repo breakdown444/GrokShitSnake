@@ -4232,7 +4232,7 @@ void main() {
       </div>
       <div class="titleblock">
         <p class="beta-pill">Beta</p>
-        <h1>GrokShitSnake 0.1.6</h1>
+        <h1>GrokShitSnake 0.1.6-beta</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
         <p class="soul">Heart and soul edition. Next stop is 1.0.</p>
         <p class="versions"><a href="play/">All versions</a></p>

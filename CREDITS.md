@@ -1,6 +1,6 @@
 # Credits
 
-GrokShitSnake 0.1.6 ships real recordings and commissioned audio/art, not the old 8-bit oscillator farts.
+GrokShitSnake **0.1.6-beta** ships real recordings and commissioned audio/art, not the old 8-bit oscillator farts.
 
 ## Fart samples (CC0)
 
