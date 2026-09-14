@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GrokShitSnake — playable versions</title>
+    <title>GrokShitSnake — the cabinets</title>
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <style>
       :root {
         color-scheme: dark;
-        font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+        font-family: "Segoe UI", "Palatino Linotype", "Book Antiqua", Palatino, serif;
       }
       body {
         margin: 0;
@@ -20,7 +20,7 @@
         color: #d7ffe8;
       }
       main {
-        width: min(100%, 520px);
+        width: min(100%, 580px);
         background: linear-gradient(180deg, #1a3224, #0c1610);
         border: 1px solid rgba(61, 255, 138, 0.22);
         border-radius: 28px;
@@ -28,17 +28,23 @@
       }
       h1 {
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1.25rem;
+        letter-spacing: 0.04em;
         color: #3dff8a;
       }
       .credit {
-        margin: 6px 0 18px;
+        margin: 8px 0 6px;
         color: #7da38d;
-        font-size: 0.85rem;
+        font-size: 0.92rem;
+        line-height: 1.45;
       }
-      a {
-        color: #3dff8a;
+      .folio {
+        margin: 0 0 18px;
+        color: #9bb5a6;
+        font-size: 0.8rem;
+        font-style: italic;
       }
+      a { color: #3dff8a; }
       ul {
         margin: 0;
         padding: 0;
@@ -48,52 +54,84 @@
         border-top: 1px solid rgba(61, 255, 138, 0.12);
       }
       li a {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 12px 0;
+        display: grid;
+        gap: 6px;
+        padding: 14px 0;
         text-decoration: none;
       }
-      li a:hover span:first-child {
+      li a:hover .ver {
         text-decoration: underline;
       }
       .ver {
         font-weight: 700;
+        font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+        letter-spacing: 0.02em;
+      }
+      .tag {
+        font-weight: 500;
+        color: #7da38d;
+        font-size: 0.78rem;
       }
       .note {
-        color: #7da38d;
-        font-size: 0.85rem;
+        color: #b7d0c2;
+        font-size: 0.9rem;
+        line-height: 1.45;
       }
     </style>
   </head>
   <body>
     <main>
       <h1>GrokShitSnake</h1>
-      <p class="credit">Proudly presented to you by Trashbird. Every shipped version stays playable.</p>
+      <p class="credit">Proudly presented to you by Trashbird.</p>
+      <p class="folio">A brief history of the coil. Nothing was thrown away; each age remains playable.</p>
       <ul>
         <li>
-          <a href="../"><span class="ver">Latest (0.1.6-beta)</span><span class="note">pre-release · site root</span></a>
+          <a href="../">
+            <span class="ver">Latest · 0.1.6-beta <span class="tag">pre-release</span></span>
+            <span class="note">The living cabinet. What the world sees when it knocks at the root.</span>
+          </a>
         </li>
         <li>
-          <a href="0.1.6-beta/"><span class="ver">0.1.6-beta</span><span class="note">pre-release · 3D poo, free-roam, real farts</span></a>
+          <a href="0.1.6-beta/">
+            <span class="ver">0.1.6-beta <span class="tag">pre-release</span></span>
+            <span class="note">The stool hath learned to wander. No grid, no four-way prison: hold left, hold right, and the lead end turns upon the whole compass. Lit in three dimensions, lumped as nature lumps it. The farts are of the flesh. The theme has a spine. Next is 1.0.</span>
+          </a>
         </li>
         <li>
-          <a href="0.1.5/"><span class="ver">0.1.5</span><span class="note">YOU SUCK in the subtitle</span></a>
+          <a href="0.1.5/">
+            <span class="ver">0.1.5</span>
+            <span class="note">Death found its tongue at last, and spoke where a player actually looks: <em>YOU SUCK</em>, set in the subtitle, plain as a gravestone.</span>
+          </a>
         </li>
         <li>
-          <a href="0.1.4/"><span class="ver">0.1.4</span><span class="note">game-over taunt overlay</span></a>
+          <a href="0.1.4/">
+            <span class="ver">0.1.4</span>
+            <span class="note">The same curse, nailed to the overlay, that the fallen might read their fortune before they rose again.</span>
+          </a>
         </li>
         <li>
-          <a href="0.1.3/"><span class="ver">0.1.3</span><span class="note">death-flash attempt</span></a>
+          <a href="0.1.3/">
+            <span class="ver">0.1.3</span>
+            <span class="note">A flash of <em>YOU SUCK</em> was promised upon the glass. The glass was unmoved. A noble failure, kept for the record.</span>
+          </a>
         </li>
         <li>
-          <a href="0.1.2/"><span class="ver">0.1.2</span><span class="note">poop overhaul, steam, farts, music</span></a>
+          <a href="0.1.2/">
+            <span class="ver">0.1.2</span>
+            <span class="note">Steam rose from the coil. The cabinet found a voice: a thin looping air, and farts as a 1985 computer might dream them. We have since begged its pardon.</span>
+          </a>
         </li>
         <li>
-          <a href="0.1.1/"><span class="ver">0.1.1</span><span class="note">turd snake, stains, 50×50</span></a>
+          <a href="0.1.1/">
+            <span class="ver">0.1.1</span>
+            <span class="note">The worm put on flesh. Fifty cells to a side, a trail of stains, the body no longer emerald but earth.</span>
+          </a>
         </li>
         <li>
-          <a href="0.1/"><span class="ver">0.1</span><span class="note">original arcade snake</span></a>
+          <a href="0.1/">
+            <span class="ver">0.1</span>
+            <span class="note">The first coil. A green worm of squares upon a twenty-by-twenty field, as our fathers knew Snake. Humble. Honest. Unashamed of being a rectangle.</span>
+          </a>
         </li>
       </ul>
     </main>

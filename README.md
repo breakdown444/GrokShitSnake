@@ -6,14 +6,14 @@ Browser arcade Snake. Proudly presented to you by Trashbird.
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
 [![Play](https://img.shields.io/badge/play-live-3dff8a.svg)](https://breakdown444.github.io/GrokShitSnake/)
 
-**0.1.6-beta** is the current pre-release. Next release is **1.0**.
+**0.1.6-beta** is the current pre-release. Next is **1.0**.
 
 Play: [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/)  
-Archive: [every shipped version](https://breakdown444.github.io/GrokShitSnake/play/)
+Archive: [every shipped cabinet](https://breakdown444.github.io/GrokShitSnake/play/)
 
 ## What it is
 
-A landscape handheld cabinet. The lead end of a lumpy 3D stool steers with left and right only. Eat the red pellets. Walls and your own body end the run. Farts are recordings. The theme is an original 48-second track, ducked under the farts.
+A landscape handheld, proudly presented to you by Trashbird. The lead end of a lumpy stool steers with left and right only, as a beast turns, not as a cursor hops. Eat the red. Walls and your own body end the run. The farts are of the flesh. The theme has a spine, and knows when to bow.
 
 ## Controls
 
@@ -62,12 +62,17 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## Versions
 
-Nothing was deleted when the repo was renamed from `GrokShitSnake-0.1`. Live root is always latest. Older cabinets stay at `/play/<version>/`.
+Nothing was deleted when the repo was renamed from `GrokShitSnake-0.1`. The live root is always the present age. Older cabinets sleep at `/play/<version>/`, and may be woken at will.
 
-| Version | URL |
-| --- | --- |
-| **0.1.6-beta** | [root](https://breakdown444.github.io/GrokShitSnake/) · [frozen](https://breakdown444.github.io/GrokShitSnake/play/0.1.6-beta/) |
-| 0.1.5 … 0.1 | [picker](https://breakdown444.github.io/GrokShitSnake/play/) |
+| Version | What it is | Play |
+| --- | --- | --- |
+| **0.1.6-beta** | The wandering stool. Pre-release. Next is 1.0. | [root](https://breakdown444.github.io/GrokShitSnake/) · [frozen](https://breakdown444.github.io/GrokShitSnake/play/0.1.6-beta/) |
+| 0.1.5 | Death speaks in the subtitle. | [play](https://breakdown444.github.io/GrokShitSnake/play/0.1.5/) |
+| 0.1.4 | The taunt upon the overlay. | [play](https://breakdown444.github.io/GrokShitSnake/play/0.1.4/) |
+| 0.1.3 | A flash that would not flash. | [play](https://breakdown444.github.io/GrokShitSnake/play/0.1.3/) |
+| 0.1.2 | Steam, and a machine’s idea of a fart. | [play](https://breakdown444.github.io/GrokShitSnake/play/0.1.2/) |
+| 0.1.1 | The worm puts on flesh. | [play](https://breakdown444.github.io/GrokShitSnake/play/0.1.1/) |
+| 0.1.0 | The first coil. | [play](https://breakdown444.github.io/GrokShitSnake/play/0.1/) |
 
 Tags: [`v0.1.6-beta`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.6-beta) · [`v0.1.5`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.5) · [`v0.1.4`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.4) · [`v0.1.3`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.3) · [`v0.1.2`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.2) · [`v0.1.1`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.1) · [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.0).
 

@@ -1,10 +1,10 @@
 # Credits
 
-GrokShitSnake **0.1.6-beta** ships real recordings and commissioned audio/art, not the old 8-bit oscillator farts.
+GrokShitSnake **0.1.6-beta** does not invent its thunder from a square wave. The farts are recordings. The theme is a song. The brown is painted, not guessed.
 
 ## Fart samples (CC0)
 
-Recorded farts by [Breviceps](https://freesound.org/people/Breviceps/) on Freesound, Creative Commons 0:
+Recorded by [Breviceps](https://freesound.org/people/Breviceps/) on Freesound, dedicated to the public domain (CC0):
 
 - [445997](https://freesound.org/people/Breviceps/sounds/445997/)
 - [445998](https://freesound.org/people/Breviceps/sounds/445998/)
@@ -12,12 +12,12 @@ Recorded farts by [Breviceps](https://freesound.org/people/Breviceps/) on Freeso
 - [446000](https://freesound.org/people/Breviceps/sounds/446000/)
 - [446001](https://freesound.org/people/Breviceps/sounds/446001/)
 
-## Studio Foley + theme
+## Studio Foley and theme
 
-Additional fart Foley and the 48-second instrumental theme were generated with ElevenLabs (text-to-sound + music v2) for this game. Original composition, no copyrighted tunes.
+Further Foley, and the forty-eight-second instrumental theme, were composed for this cabinet with ElevenLabs. Original music. No stolen tunes.
 
-## 3D textures
+## Textures
 
-Poop albedo/normal, floor, and smear decal were commissioned as original game textures for this release.
+Albedo, normal, floor, and smear were commissioned as original maps for the 0.1.6-beta build.
 
-Code remains GPL-3.0.
+The code remains [GPL-3.0](LICENSE).
