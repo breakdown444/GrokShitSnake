@@ -120,13 +120,14 @@ canvas {
 .overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: grid;
   place-content: center;
-  gap: 6px;
+  justify-items: center;
+  gap: 8px;
   text-align: center;
   background: rgba(4, 10, 7, 0.62);
   backdrop-filter: blur(2px);
-  overflow: hidden;
 }
 
 .overlay.hidden {
@@ -147,42 +148,41 @@ canvas {
 }
 
 .you-suck {
-  position: absolute;
-  left: 50%;
-  top: 62%;
-  margin: 0;
-  width: max-content;
+  display: none;
+  margin: 10px 0 0;
   max-width: 92%;
-  font-size: clamp(2.2rem, 8vw, 3.4rem);
+  font-size: clamp(2.4rem, 7vw, 3.8rem);
   font-weight: 900;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   line-height: 1;
   color: #ff4d6d;
-  text-shadow: 0 0 24px rgba(255, 77, 109, 0.45);
+  text-shadow:
+    0 0 18px rgba(255, 77, 109, 0.7),
+    0 2px 0 #4a1020;
   pointer-events: none;
-  transform: translate(-50%, 0);
 }
 
 .you-suck.flash {
-  animation: suck-fade 1.85s ease-out 0.28s both;
+  display: block;
+  animation: suck-fade 2.6s ease-out both;
 }
 
 @keyframes suck-fade {
   0% {
     opacity: 0;
-    transform: translate(-50%, 8px) scale(0.72);
+    transform: scale(0.72) translateY(10px);
   }
-  14% {
+  10% {
     opacity: 1;
-    transform: translate(-50%, 0) scale(1.12);
+    transform: scale(1.1) translateY(0);
   }
-  38% {
+  62% {
     opacity: 1;
-    transform: translate(-50%, 0) scale(1);
+    transform: scale(1) translateY(0);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, 0) scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 

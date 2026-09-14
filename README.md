@@ -8,7 +8,8 @@ Versions live **in the project**, not in the repository name.
 
 - **Play:** [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/)
 - **Repo:** [github.com/breakdown444/GrokShitSnake](https://github.com/breakdown444/GrokShitSnake)
-- **0.1.2** (current): high-res poop, steam, fluid stains, farts, music
+- **0.1.3** (current): YOU SUCK! death flash actually shows under Game over
+- **0.1.2:** tag [`v0.1.2`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.2)
 - **0.1.1:** tag [`v0.1.1`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.1)
 - **0.1:** tag [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.0) · branch [`v0.1`](https://github.com/breakdown444/GrokShitSnake/tree/v0.1)
 

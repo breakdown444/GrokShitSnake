@@ -12,7 +12,7 @@ app.innerHTML = `
         <p id="score" class="value">0</p>
       </div>
       <div class="titleblock">
-        <h1>GrokShitSnake 0.1.2</h1>
+        <h1>GrokShitSnake 0.1.3</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
       </div>
       <div>
@@ -26,7 +26,7 @@ app.innerHTML = `
       <div id="overlay" class="overlay">
         <p id="overlay-title">Ready</p>
         <p id="overlay-sub">Enter, tap, or mash GO. Try not to eat yourself.</p>
-        <p id="you-suck" class="you-suck" hidden>YOU SUCK!</p>
+        <p id="you-suck" class="you-suck" aria-hidden="true">YOU SUCK!</p>
       </div>
     </div>
 
@@ -95,10 +95,11 @@ function resizeCanvas(): void {
 }
 
 function flashYouSuck(): void {
-  youSuck.hidden = false
   youSuck.classList.remove('flash')
+  youSuck.setAttribute('aria-hidden', 'true')
   void youSuck.offsetWidth
   youSuck.classList.add('flash')
+  youSuck.setAttribute('aria-hidden', 'false')
 }
 
 function syncHud(): void {
@@ -108,8 +109,8 @@ function syncHud(): void {
 
   if (game.phase === 'playing') {
     overlay.classList.add('hidden')
-    youSuck.hidden = true
     youSuck.classList.remove('flash')
+    youSuck.setAttribute('aria-hidden', 'true')
     suckForDeath = false
     return
   }
@@ -117,14 +118,14 @@ function syncHud(): void {
   if (game.phase === 'ready') {
     overlayTitle.textContent = 'Ready'
     overlaySub.textContent = 'Enter, tap, or mash GO. Try not to eat yourself.'
-    youSuck.hidden = true
     youSuck.classList.remove('flash')
+    youSuck.setAttribute('aria-hidden', 'true')
     suckForDeath = false
   } else if (game.phase === 'paused') {
     overlayTitle.textContent = 'Paused'
     overlaySub.textContent = 'Space or GO to continue'
-    youSuck.hidden = true
     youSuck.classList.remove('flash')
+    youSuck.setAttribute('aria-hidden', 'true')
   } else {
     overlayTitle.textContent = 'Game over'
     overlaySub.textContent = `Score ${game.score} · Enter to play again`
