@@ -1,6 +1,7 @@
 import './style.css'
-import { SnakeGame, type Dir } from './game.ts'
-import { drawGame } from './render.ts'
+import { SnakeGame, type Dir, type Point } from './game.ts'
+import { drawGame, resetFx } from './render.ts'
+import { playFart, unlockAudio } from './audio.ts'
 
 const app = document.querySelector<HTMLDivElement>('#app')!
 app.innerHTML = `
@@ -11,7 +12,7 @@ app.innerHTML = `
         <p id="score" class="value">0</p>
       </div>
       <div class="titleblock">
-        <h1>GrokShitSnake 0.1.1</h1>
+        <h1>GrokShitSnake 0.1.2</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
       </div>
       <div>
@@ -21,7 +22,7 @@ app.innerHTML = `
     </header>
 
     <div class="screen">
-      <canvas id="board" width="1300" height="1300" aria-label="Snake board"></canvas>
+      <canvas id="board" width="1600" height="1600" aria-label="Snake board"></canvas>
       <div id="overlay" class="overlay">
         <p id="overlay-title">Ready</p>
         <p id="overlay-sub">Enter, tap, or mash GO. Try not to eat yourself.</p>
@@ -39,12 +40,12 @@ app.innerHTML = `
       <button type="button" data-dir="down" aria-label="Down">▼</button>
     </div>
 
-    <p class="hint">Arrows / WASD to steer · Space to pause · Enter to start</p>
+    <p class="hint">Arrows / WASD to steer · Space to pause · Enter to start · Sound on first GO</p>
   </main>
 `
 
 const canvas = document.querySelector<HTMLCanvasElement>('#board')!
-const ctx = canvas.getContext('2d')!
+const ctx = canvas.getContext('2d', { alpha: false })!
 const scoreEl = document.querySelector('#score')!
 const bestEl = document.querySelector('#best')!
 const overlay = document.querySelector<HTMLDivElement>('#overlay')!
@@ -59,11 +60,38 @@ game.reset()
 let lastTick = 0
 let suckForDeath = false
 let touchStart: { x: number; y: number } | null = null
+let fromSnake: Point[] = game.snake.map((p) => ({ ...p }))
+let toSnake: Point[] = game.snake.map((p) => ({ ...p }))
+
+function copyPts(pts: Point[]): Point[] {
+  return pts.map((p) => ({ x: p.x, y: p.y }))
+}
+
+function lockInterp(before: Point[], after: Point[]): void {
+  fromSnake = after.length > before.length && before[0]
+    ? [{ ...before[0] }, ...copyPts(before)]
+    : copyPts(before.length ? before : after)
+  toSnake = copyPts(after)
+}
+
+function visuals(now: number): Point[] {
+  const t = game.phase === 'playing'
+    ? Math.min(1, (now - lastTick) / game.tickMs)
+    : 1
+  const e = t * t * (3 - 2 * t)
+  return toSnake.map((p, i) => {
+    const a = fromSnake[i] ?? p
+    return { x: a.x + (p.x - a.x) * e, y: a.y + (p.y - a.y) * e }
+  })
+}
 
 function resizeCanvas(): void {
-  const size = Math.min(1300, Math.floor(canvas.parentElement!.clientWidth))
-  canvas.width = size
-  canvas.height = size
+  const css = Math.min(1360, Math.floor(canvas.parentElement!.clientWidth))
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  canvas.style.width = `${css}px`
+  canvas.style.height = `${css}px`
+  canvas.width = Math.max(1, Math.floor(css * dpr))
+  canvas.height = Math.max(1, Math.floor(css * dpr))
 }
 
 function flashYouSuck(): void {
@@ -107,13 +135,31 @@ function syncHud(): void {
   }
 }
 
+function begin(): void {
+  unlockAudio()
+  if (game.phase === 'paused') {
+    game.start()
+    syncHud()
+    return
+  }
+  const before = copyPts(game.snake)
+  game.start()
+  lockInterp(before, game.snake)
+  resetFx()
+  lastTick = performance.now()
+  syncHud()
+}
+
 function loop(now: number): void {
   if (game.phase === 'playing' && now - lastTick >= game.tickMs) {
-    game.step(now)
+    const before = copyPts(game.snake)
+    const ate = game.step(now)
+    lockInterp(before, game.snake)
     lastTick = now
+    if (ate) playFart()
     syncHud()
   }
-  drawGame(ctx, game, now)
+  drawGame(ctx, game, now, visuals(now), game.phase === 'playing')
   requestAnimationFrame(loop)
 }
 
@@ -133,6 +179,7 @@ function bindKeys(): void {
     const dir = map[event.code]
     if (dir) {
       event.preventDefault()
+      unlockAudio()
       game.turn(dir)
       syncHud()
       return
@@ -144,9 +191,7 @@ function bindKeys(): void {
     }
     if (event.code === 'Enter') {
       event.preventDefault()
-      game.start()
-      lastTick = performance.now()
-      syncHud()
+      begin()
     }
   })
 }
@@ -156,6 +201,7 @@ function bindPad(): void {
     const dir = btn.dataset.dir as Dir
     const press = (event: Event) => {
       event.preventDefault()
+      unlockAudio()
       game.turn(dir)
       syncHud()
     }
@@ -164,18 +210,17 @@ function bindPad(): void {
   })
 
   actionBtn.addEventListener('click', () => {
-    if (game.phase === 'playing') game.togglePause()
-    else game.start()
-    lastTick = performance.now()
-    syncHud()
+    unlockAudio()
+    if (game.phase === 'playing') {
+      game.togglePause()
+      syncHud()
+    } else {
+      begin()
+    }
   })
 
   canvas.addEventListener('click', () => {
-    if (game.phase !== 'playing') {
-      game.start()
-      lastTick = performance.now()
-      syncHud()
-    }
+    if (game.phase !== 'playing') begin()
   })
 }
 
@@ -192,6 +237,7 @@ function bindSwipe(): void {
     const dy = t.clientY - touchStart.y
     touchStart = null
     if (Math.hypot(dx, dy) < 24) return
+    unlockAudio()
     if (Math.abs(dx) > Math.abs(dy)) game.turn(dx > 0 ? 'right' : 'left')
     else game.turn(dy > 0 ? 'down' : 'up')
     syncHud()

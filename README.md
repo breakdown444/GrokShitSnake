@@ -1,14 +1,16 @@
-# GrokShitSnake 0.1.1
+# GrokShitSnake
 
-A shitty ass web browser version of snake Grok made for shits n giggles.
+A shitty ass web browser version of snake. Proudly presented to you by Trashbird.
 
-Proudly presented to you by Trashbird.
+Arcade Snake in the browser. Steer with the keyboard, on-screen pad, or swipe. Eat the red pellets. Walls and your own tail end the run. Best score stays in this browser. The snake is a turd. It leaves a stain that evaporates after 3 seconds. Eating a pellet farts. Silly music stays under the farts.
 
-Arcade Snake in the browser. Steer with the keyboard, on-screen pad, or swipe. Eat the red pellets. Walls and your own tail end the run. Best score stays in this browser. The snake is a turd. It leaves a stain that evaporates after 3 seconds.
+Versions live **in the project**, not in the repository name.
 
-- **Latest (0.1.1):** [github.com/breakdown444/GrokShitSnake-0.1](https://github.com/breakdown444/GrokShitSnake-0.1)
-- **Play 0.1.1:** [breakdown444.github.io/GrokShitSnake-0.1](https://breakdown444.github.io/GrokShitSnake-0.1/)
-- **0.1 (frozen):** tag [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake-0.1/tree/v0.1.0) and branch [`v0.1`](https://github.com/breakdown444/GrokShitSnake-0.1/tree/v0.1)
+- **Play:** [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/)
+- **Repo:** [github.com/breakdown444/GrokShitSnake](https://github.com/breakdown444/GrokShitSnake)
+- **0.1.2** (current): high-res poop, steam, fluid stains, farts, music
+- **0.1.1:** tag [`v0.1.1`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.1)
+- **0.1:** tag [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.0) · branch [`v0.1`](https://github.com/breakdown444/GrokShitSnake/tree/v0.1)
 
 ## Play locally
 
@@ -25,6 +27,7 @@ Open [http://127.0.0.1:43180](http://127.0.0.1:43180).
 - **Arrows** or **WASD** to turn
 - **Space** to pause
 - On a phone, swipe the board or use the pad
+- Sound starts on the first GO / key / tap
 
 ## Build
 
@@ -33,6 +36,6 @@ npm run build
 npm run preview
 ```
 
-Pushing `main` deploys a static build to GitHub Pages (enable **Settings → Pages → Source: GitHub Actions**).
+Pushing `main` deploys a static build to GitHub Pages.
 
 Licensed under [GPL-3.0](LICENSE).
