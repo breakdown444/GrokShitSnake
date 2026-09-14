@@ -12,7 +12,7 @@ app.innerHTML = `
         <p id="score" class="value">0</p>
       </div>
       <div class="titleblock">
-        <h1>GrokShitSnake 0.1.3</h1>
+        <h1>GrokShitSnake 0.1.4</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
       </div>
       <div>
@@ -26,7 +26,7 @@ app.innerHTML = `
       <div id="overlay" class="overlay">
         <p id="overlay-title">Ready</p>
         <p id="overlay-sub">Enter, tap, or mash GO. Try not to eat yourself.</p>
-        <p id="you-suck" class="you-suck" aria-hidden="true">YOU SUCK!</p>
+        <p id="you-suck" class="you-suck">YOU SUCK!</p>
       </div>
     </div>
 
@@ -51,14 +51,12 @@ const bestEl = document.querySelector('#best')!
 const overlay = document.querySelector<HTMLDivElement>('#overlay')!
 const overlayTitle = document.querySelector('#overlay-title')!
 const overlaySub = document.querySelector('#overlay-sub')!
-const youSuck = document.querySelector<HTMLParagraphElement>('#you-suck')!
 const actionBtn = document.querySelector('#action')!
 
 const game = new SnakeGame()
 game.reset()
 
 let lastTick = 0
-let suckForDeath = false
 let touchStart: { x: number; y: number } | null = null
 let fromSnake: Point[] = game.snake.map((p) => ({ ...p }))
 let toSnake: Point[] = game.snake.map((p) => ({ ...p }))
@@ -94,45 +92,25 @@ function resizeCanvas(): void {
   canvas.height = Math.max(1, Math.floor(css * dpr))
 }
 
-function flashYouSuck(): void {
-  youSuck.classList.remove('flash')
-  youSuck.setAttribute('aria-hidden', 'true')
-  void youSuck.offsetWidth
-  youSuck.classList.add('flash')
-  youSuck.setAttribute('aria-hidden', 'false')
-}
-
 function syncHud(): void {
   scoreEl.textContent = String(game.score)
   bestEl.textContent = String(game.highScore)
   actionBtn.textContent = game.phase === 'playing' ? 'II' : 'GO'
+  overlay.classList.toggle('hidden', game.phase === 'playing')
+  overlay.classList.toggle('is-dead', game.phase === 'dead')
 
   if (game.phase === 'playing') {
-    overlay.classList.add('hidden')
-    youSuck.classList.remove('flash')
-    youSuck.setAttribute('aria-hidden', 'true')
-    suckForDeath = false
     return
   }
-  overlay.classList.remove('hidden')
   if (game.phase === 'ready') {
     overlayTitle.textContent = 'Ready'
     overlaySub.textContent = 'Enter, tap, or mash GO. Try not to eat yourself.'
-    youSuck.classList.remove('flash')
-    youSuck.setAttribute('aria-hidden', 'true')
-    suckForDeath = false
   } else if (game.phase === 'paused') {
     overlayTitle.textContent = 'Paused'
     overlaySub.textContent = 'Space or GO to continue'
-    youSuck.classList.remove('flash')
-    youSuck.setAttribute('aria-hidden', 'true')
   } else {
     overlayTitle.textContent = 'Game over'
     overlaySub.textContent = `Score ${game.score} · Enter to play again`
-    if (!suckForDeath) {
-      suckForDeath = true
-      flashYouSuck()
-    }
   }
 }
 
