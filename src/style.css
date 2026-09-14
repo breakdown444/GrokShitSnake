@@ -80,6 +80,15 @@ body {
   text-wrap: balance;
 }
 
+.versions {
+  margin: 6px 0 0;
+  font-size: 0.68rem;
+}
+
+.versions a {
+  color: var(--accent);
+}
+
 .hud > div:last-child {
   text-align: right;
 }

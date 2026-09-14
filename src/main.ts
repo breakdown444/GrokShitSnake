@@ -14,6 +14,7 @@ app.innerHTML = `
       <div class="titleblock">
         <h1>GrokShitSnake 0.1.5</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
+        <p class="versions"><a href="play/">All versions</a></p>
       </div>
       <div>
         <p class="label">Best</p>
