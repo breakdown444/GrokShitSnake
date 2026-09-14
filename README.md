@@ -8,7 +8,8 @@ Versions live **in the project**, not in the repository name.
 
 - **Play:** [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/)
 - **Repo:** [github.com/breakdown444/GrokShitSnake](https://github.com/breakdown444/GrokShitSnake)
-- **0.1.4** (current): YOU SUCK! stays on the game-over overlay
+- **0.1.5** (current): game over says YOU SUCK!
+- **0.1.4:** tag [`v0.1.4`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.4)
 - **0.1.3:** tag [`v0.1.3`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.3)
 - **0.1.2:** tag [`v0.1.2`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.2)
 - **0.1.1:** tag [`v0.1.1`](https://github.com/breakdown444/GrokShitSnake/releases/tag/v0.1.1)

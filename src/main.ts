@@ -12,7 +12,7 @@ app.innerHTML = `
         <p id="score" class="value">0</p>
       </div>
       <div class="titleblock">
-        <h1>GrokShitSnake 0.1.4</h1>
+        <h1>GrokShitSnake 0.1.5</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
       </div>
       <div>
@@ -26,7 +26,6 @@ app.innerHTML = `
       <div id="overlay" class="overlay">
         <p id="overlay-title">Ready</p>
         <p id="overlay-sub">Enter, tap, or mash GO. Try not to eat yourself.</p>
-        <p id="you-suck" class="you-suck">YOU SUCK!</p>
       </div>
     </div>
 
@@ -97,11 +96,8 @@ function syncHud(): void {
   bestEl.textContent = String(game.highScore)
   actionBtn.textContent = game.phase === 'playing' ? 'II' : 'GO'
   overlay.classList.toggle('hidden', game.phase === 'playing')
-  overlay.classList.toggle('is-dead', game.phase === 'dead')
 
-  if (game.phase === 'playing') {
-    return
-  }
+  if (game.phase === 'playing') return
   if (game.phase === 'ready') {
     overlayTitle.textContent = 'Ready'
     overlaySub.textContent = 'Enter, tap, or mash GO. Try not to eat yourself.'
@@ -110,7 +106,7 @@ function syncHud(): void {
     overlaySub.textContent = 'Space or GO to continue'
   } else {
     overlayTitle.textContent = 'Game over'
-    overlaySub.textContent = `Score ${game.score} · Enter to play again`
+    overlaySub.textContent = `YOU SUCK!  Score ${game.score} · Enter to play again`
   }
 }
 
