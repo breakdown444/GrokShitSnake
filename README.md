@@ -4,6 +4,9 @@ A shitty ass web browser version of snake Grok made for shits n giggles.
 
 Arcade Snake in the browser. Steer with the keyboard, on-screen pad, or swipe. Eat the red pellets. Walls and your own tail end the run. Best score stays in this browser.
 
+- **Repo:** [github.com/breakdown444/GrokShitSnake-0.1](https://github.com/breakdown444/GrokShitSnake-0.1)
+- **Play:** [breakdown444.github.io/GrokShitSnake-0.1](https://breakdown444.github.io/GrokShitSnake-0.1/)
+
 ## Play locally
 
 ```bash
