@@ -24,8 +24,8 @@ export const WORLD_H = 12.4
 export const STAIN_MS = 3200
 export const LUMP_SPACING = 0.4
 export const START_LENGTH = 2.55
-export const START_SPEED = 4.15
-export const TURN_RATE = 3.05
+export const START_SPEED = 3.15
+export const TURN_RATE = 3.55
 
 function clamp(n: number, a: number, b: number): number {
   return Math.max(a, Math.min(b, n))
@@ -187,11 +187,11 @@ export class SnakeGame {
 
     this.rebuildLumps()
 
-    const hw = WORLD_W / 2 - 0.32
-    const hh = WORLD_H / 2 - 0.32
+    const hw = WORLD_W / 2 - 0.4
+    const hh = WORLD_H / 2 - 0.4
     const hitWall = Math.abs(this.head.x) > hw || Math.abs(this.head.y) > hh
     let hitSelf = false
-    for (let i = 8; i < this.lumps.length; i++) {
+    for (let i = 10; i < this.lumps.length; i++) {
       const l = this.lumps[i]
       if (dist2(this.head, l) < (l.r * 0.78 + 0.12) ** 2) {
         hitSelf = true
@@ -217,7 +217,7 @@ export class SnakeGame {
     if (dist2(this.head, this.food) < 0.48 ** 2) {
       this.score += 10
       this.length += 0.52
-      this.speed = Math.min(6.4, START_SPEED + this.score * 0.012)
+      this.speed = Math.min(4.85, START_SPEED + this.score * 0.01)
       this.placeFood()
       return true
     }
