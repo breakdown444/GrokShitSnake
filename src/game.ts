@@ -1,11 +1,13 @@
 export type Point = { x: number; y: number }
 export type Dir = 'up' | 'down' | 'left' | 'right'
 export type Phase = 'ready' | 'playing' | 'paused' | 'dead'
+export type Stain = { x: number; y: number; at: number }
 
-export const COLS = 20
-export const ROWS = 20
+export const COLS = 50
+export const ROWS = 50
 export const START_TICK_MS = 140
 export const MIN_TICK_MS = 70
+export const STAIN_MS = 3000
 
 const OPPOSITE: Record<Dir, Dir> = {
   up: 'down',
@@ -31,19 +33,20 @@ function randomEmpty(occupied: Point[]): Point {
 
 export class SnakeGame {
   snake: Point[] = []
-  food: Point = { x: 10, y: 4 }
+  food: Point = { x: 25, y: 10 }
   dir: Dir = 'right'
   queued: Dir | null = null
   phase: Phase = 'ready'
   score = 0
   highScore = Number(localStorage.getItem('grok-shit-snake-high-score') ?? '0')
   tickMs = START_TICK_MS
+  stains: Stain[] = []
 
   reset(): void {
     this.snake = [
-      { x: 8, y: 10 },
-      { x: 7, y: 10 },
-      { x: 6, y: 10 },
+      { x: 20, y: 25 },
+      { x: 19, y: 25 },
+      { x: 18, y: 25 },
     ]
     this.dir = 'right'
     this.queued = null
@@ -51,12 +54,14 @@ export class SnakeGame {
     this.tickMs = START_TICK_MS
     this.food = randomEmpty(this.snake)
     this.phase = 'ready'
+    this.stains = []
   }
 
   start(): void {
     if (this.phase === 'dead' || this.phase === 'ready') {
       this.reset()
       this.phase = 'playing'
+      this.markTrail(performance.now())
     } else if (this.phase === 'paused') {
       this.phase = 'playing'
     }
@@ -68,14 +73,29 @@ export class SnakeGame {
   }
 
   turn(next: Dir): void {
-    if (this.phase === 'ready') this.phase = 'playing'
+    if (this.phase === 'ready') {
+      this.phase = 'playing'
+      this.markTrail(performance.now())
+    }
     if (this.phase !== 'playing') return
     const current = this.queued ?? this.dir
     if (next === OPPOSITE[current]) return
     this.queued = next
   }
 
-  step(): void {
+  markTrail(at: number): void {
+    for (const point of this.snake) this.dropStain(point, at)
+  }
+
+  dropStain(point: Point, at: number): void {
+    this.stains.push({ x: point.x, y: point.y, at })
+  }
+
+  expireStains(now: number): void {
+    this.stains = this.stains.filter((stain) => now - stain.at < STAIN_MS)
+  }
+
+  step(now = performance.now()): void {
     if (this.phase !== 'playing') return
     if (this.queued) {
       this.dir = this.queued
@@ -100,6 +120,7 @@ export class SnakeGame {
     }
 
     this.snake.unshift(next)
+    this.dropStain(next, now)
     if (same(next, this.food)) {
       this.score += 10
       this.tickMs = Math.max(MIN_TICK_MS, START_TICK_MS - Math.floor(this.score / 40) * 8)
@@ -107,5 +128,6 @@ export class SnakeGame {
     } else {
       this.snake.pop()
     }
+    this.expireStains(now)
   }
 }

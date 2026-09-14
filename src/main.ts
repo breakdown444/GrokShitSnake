@@ -11,8 +11,8 @@ app.innerHTML = `
         <p id="score" class="value">0</p>
       </div>
       <div class="titleblock">
-        <h1>GrokShitSnake</h1>
-        <p class="ver">0.1</p>
+        <h1>GrokShitSnake 0.1.1</h1>
+        <p class="credit">Proudly presented to you by Trashbird</p>
       </div>
       <div>
         <p class="label">Best</p>
@@ -21,10 +21,11 @@ app.innerHTML = `
     </header>
 
     <div class="screen">
-      <canvas id="board" width="640" height="640" aria-label="Snake board"></canvas>
+      <canvas id="board" width="1300" height="1300" aria-label="Snake board"></canvas>
       <div id="overlay" class="overlay">
         <p id="overlay-title">Ready</p>
         <p id="overlay-sub">Enter, tap, or mash GO. Try not to eat yourself.</p>
+        <p id="you-suck" class="you-suck" hidden>YOU SUCK!</p>
       </div>
     </div>
 
@@ -49,18 +50,27 @@ const bestEl = document.querySelector('#best')!
 const overlay = document.querySelector<HTMLDivElement>('#overlay')!
 const overlayTitle = document.querySelector('#overlay-title')!
 const overlaySub = document.querySelector('#overlay-sub')!
+const youSuck = document.querySelector<HTMLParagraphElement>('#you-suck')!
 const actionBtn = document.querySelector('#action')!
 
 const game = new SnakeGame()
 game.reset()
 
 let lastTick = 0
+let suckForDeath = false
 let touchStart: { x: number; y: number } | null = null
 
 function resizeCanvas(): void {
-  const size = Math.min(640, Math.floor(canvas.parentElement!.clientWidth))
+  const size = Math.min(1300, Math.floor(canvas.parentElement!.clientWidth))
   canvas.width = size
   canvas.height = size
+}
+
+function flashYouSuck(): void {
+  youSuck.hidden = false
+  youSuck.classList.remove('flash')
+  void youSuck.offsetWidth
+  youSuck.classList.add('flash')
 }
 
 function syncHud(): void {
@@ -70,24 +80,36 @@ function syncHud(): void {
 
   if (game.phase === 'playing') {
     overlay.classList.add('hidden')
+    youSuck.hidden = true
+    youSuck.classList.remove('flash')
+    suckForDeath = false
     return
   }
   overlay.classList.remove('hidden')
   if (game.phase === 'ready') {
     overlayTitle.textContent = 'Ready'
     overlaySub.textContent = 'Enter, tap, or mash GO. Try not to eat yourself.'
+    youSuck.hidden = true
+    youSuck.classList.remove('flash')
+    suckForDeath = false
   } else if (game.phase === 'paused') {
     overlayTitle.textContent = 'Paused'
     overlaySub.textContent = 'Space or GO to continue'
+    youSuck.hidden = true
+    youSuck.classList.remove('flash')
   } else {
     overlayTitle.textContent = 'Game over'
     overlaySub.textContent = `Score ${game.score} · Enter to play again`
+    if (!suckForDeath) {
+      suckForDeath = true
+      flashYouSuck()
+    }
   }
 }
 
 function loop(now: number): void {
   if (game.phase === 'playing' && now - lastTick >= game.tickMs) {
-    game.step()
+    game.step(now)
     lastTick = now
     syncHud()
   }

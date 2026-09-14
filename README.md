@@ -1,11 +1,14 @@
-# GrokShitSnake 0.1
+# GrokShitSnake 0.1.1
 
 A shitty ass web browser version of snake Grok made for shits n giggles.
 
-Arcade Snake in the browser. Steer with the keyboard, on-screen pad, or swipe. Eat the red pellets. Walls and your own tail end the run. Best score stays in this browser.
+Proudly presented to you by Trashbird.
 
-- **Repo:** [github.com/breakdown444/GrokShitSnake-0.1](https://github.com/breakdown444/GrokShitSnake-0.1)
-- **Play:** [breakdown444.github.io/GrokShitSnake-0.1](https://breakdown444.github.io/GrokShitSnake-0.1/)
+Arcade Snake in the browser. Steer with the keyboard, on-screen pad, or swipe. Eat the red pellets. Walls and your own tail end the run. Best score stays in this browser. The snake is a turd. It leaves a stain that evaporates after 3 seconds.
+
+- **Latest (0.1.1):** [github.com/breakdown444/GrokShitSnake-0.1](https://github.com/breakdown444/GrokShitSnake-0.1)
+- **Play 0.1.1:** [breakdown444.github.io/GrokShitSnake-0.1](https://breakdown444.github.io/GrokShitSnake-0.1/)
+- **0.1 (frozen):** tag [`v0.1.0`](https://github.com/breakdown444/GrokShitSnake-0.1/tree/v0.1.0) and branch [`v0.1`](https://github.com/breakdown444/GrokShitSnake-0.1/tree/v0.1)
 
 ## Play locally
 

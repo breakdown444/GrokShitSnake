@@ -1,21 +1,122 @@
-import { COLS, ROWS, type SnakeGame } from './game.ts'
+import { COLS, ROWS, STAIN_MS, type Point, type SnakeGame } from './game.ts'
 
-function roundRect(
+function frac(n: number): number {
+  return n - Math.floor(n)
+}
+
+function rnd(x: number, y: number, k: number): number {
+  return frac(Math.sin(x * 127.1 + y * 311.7 + k * 74.7) * 43758.5453)
+}
+
+function ellipse(
   ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
+  rot = 0,
 ): void {
-  const radius = Math.min(r, w / 2, h / 2)
   ctx.beginPath()
-  ctx.moveTo(x + radius, y)
-  ctx.arcTo(x + w, y, x + w, y + h, radius)
-  ctx.arcTo(x + w, y + h, x, y + h, radius)
-  ctx.arcTo(x, y + h, x, y, radius)
-  ctx.arcTo(x, y, x + w, y, radius)
-  ctx.closePath()
+  ctx.ellipse(cx, cy, rx, ry, rot, 0, Math.PI * 2)
+}
+
+function cellCenter(ox: number, oy: number, cell: number, p: Point): { cx: number; cy: number } {
+  return {
+    cx: ox + (p.x + 0.5) * cell,
+    cy: oy + (p.y + 0.5) * cell,
+  }
+}
+
+function drawStains(
+  ctx: CanvasRenderingContext2D,
+  game: SnakeGame,
+  now: number,
+  ox: number,
+  oy: number,
+  cell: number,
+): void {
+  for (const stain of game.stains) {
+    const life = 1 - (now - stain.at) / STAIN_MS
+    if (life <= 0) continue
+    const { cx, cy } = cellCenter(ox, oy, cell, stain)
+    const wobble = rnd(stain.x, stain.y, 1)
+    ctx.save()
+    ctx.globalAlpha = life * 0.52
+    ctx.fillStyle = `rgb(${92 + wobble * 28}, ${58 + wobble * 10}, ${18})`
+    ellipse(
+      ctx,
+      cx + (wobble - 0.5) * cell * 0.12,
+      cy + (rnd(stain.x, stain.y, 2) - 0.5) * cell * 0.1,
+      cell * (0.42 + wobble * 0.16),
+      cell * (0.28 + rnd(stain.x, stain.y, 3) * 0.12),
+      (wobble - 0.5) * 0.9,
+    )
+    ctx.fill()
+    ctx.fillStyle = `rgba(58, 34, 12, ${life * 0.35})`
+    ellipse(
+      ctx,
+      cx + cell * 0.08,
+      cy + cell * 0.06,
+      cell * 0.22,
+      cell * 0.16,
+      wobble,
+    )
+    ctx.fill()
+    ctx.restore()
+  }
+}
+
+function drawTurd(
+  ctx: CanvasRenderingContext2D,
+  seg: Point,
+  i: number,
+  isHead: boolean,
+  ox: number,
+  oy: number,
+  cell: number,
+): void {
+  const { cx, cy } = cellCenter(ox, oy, cell, seg)
+  const a = rnd(seg.x, seg.y, i)
+  const b = rnd(seg.x, seg.y, i + 9)
+  const scale = isHead ? 1.08 : 0.92 + a * 0.12
+  const brown = 58 + Math.round(a * 36)
+  const red = 78 + Math.round(b * 28)
+
+  ctx.save()
+  ctx.fillStyle = '#24150e'
+  ellipse(ctx, cx, cy + cell * 0.07, cell * 0.46 * scale, cell * 0.34 * scale, (a - 0.5) * 0.5)
+  ctx.fill()
+
+  ctx.fillStyle = `rgb(${red}, ${brown}, ${16 + Math.round(a * 8)})`
+  ellipse(ctx, cx, cy, cell * 0.44 * scale, cell * 0.33 * scale, (a - 0.5) * 0.55)
+  ctx.fill()
+
+  for (let k = 0; k < 3; k++) {
+    const u = rnd(seg.x, seg.y, i * 3 + k)
+    const v = rnd(seg.x, seg.y, i * 5 + k + 4)
+    ctx.fillStyle = `rgb(${70 + Math.round(u * 40)}, ${38 + Math.round(v * 18)}, 14)`
+    ellipse(
+      ctx,
+      cx + (u - 0.5) * cell * 0.28,
+      cy + (v - 0.5) * cell * 0.22,
+      cell * (0.16 + u * 0.1) * scale,
+      cell * (0.12 + v * 0.08) * scale,
+      (u - 0.5) * 1.2,
+    )
+    ctx.fill()
+  }
+
+  ctx.fillStyle = isHead ? 'rgba(210, 176, 122, 0.38)' : 'rgba(186, 150, 96, 0.22)'
+  ellipse(
+    ctx,
+    cx - cell * 0.12,
+    cy - cell * 0.12,
+    cell * 0.14 * scale,
+    cell * 0.08 * scale,
+    -0.5,
+  )
+  ctx.fill()
+  ctx.restore()
 }
 
 export function drawGame(
@@ -42,6 +143,9 @@ export function drawGame(
   ctx.lineWidth = 1
   ctx.strokeRect(ox + 0.5, oy + 0.5, cell * COLS - 1, cell * ROWS - 1)
 
+  game.expireStains(now)
+  drawStains(ctx, game, now, ox, oy, cell)
+
   const pulse = 0.5 + 0.5 * Math.sin(now / 180)
   const foodX = ox + game.food.x * cell
   const foodY = oy + game.food.y * cell
@@ -58,30 +162,15 @@ export function drawGame(
   ctx.arc(foodX + cell * 0.4, foodY + cell * 0.38, cell * 0.1, 0, Math.PI * 2)
   ctx.fill()
 
-  game.snake.forEach((seg, i) => {
-    const t = i / Math.max(game.snake.length - 1, 1)
-    const g = Math.round(255 - t * 90)
-    const b = Math.round(138 - t * 60)
-    ctx.fillStyle = i === 0 ? '#b8ffd4' : `rgb(46, ${g}, ${b})`
-    ctx.shadowColor = i === 0 ? 'rgba(61, 255, 138, 0.55)' : 'transparent'
-    ctx.shadowBlur = i === 0 ? 14 : 0
-    roundRect(
-      ctx,
-      ox + seg.x * cell + cell * 0.08,
-      oy + seg.y * cell + cell * 0.08,
-      cell * 0.84,
-      cell * 0.84,
-      cell * 0.22,
-    )
-    ctx.fill()
-    ctx.shadowBlur = 0
-  })
+  for (let i = game.snake.length - 1; i >= 0; i--) {
+    drawTurd(ctx, game.snake[i], i, i === 0, ox, oy, cell)
+  }
 
   const head = game.snake[0]
   if (head) {
     const hx = ox + head.x * cell
     const hy = oy + head.y * cell
-    const eye = cell * 0.12
+    const eye = cell * 0.11
     const offsets = {
       right: [
         [0.62, 0.32],
@@ -100,10 +189,16 @@ export function drawGame(
         [0.62, 0.62],
       ],
     }[game.dir]
-    ctx.fillStyle = '#07140c'
+    ctx.fillStyle = '#1a0e08'
     for (const [ex, ey] of offsets) {
       ctx.beginPath()
       ctx.arc(hx + cell * ex, hy + cell * ey, eye, 0, Math.PI * 2)
+      ctx.fill()
+    }
+    ctx.fillStyle = 'rgba(232, 196, 120, 0.7)'
+    for (const [ex, ey] of offsets) {
+      ctx.beginPath()
+      ctx.arc(hx + cell * ex - eye * 0.25, hy + cell * ey - eye * 0.25, eye * 0.28, 0, Math.PI * 2)
       ctx.fill()
     }
   }
