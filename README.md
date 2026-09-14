@@ -9,7 +9,7 @@ Browser arcade Snake. Proudly presented to you by Trashbird.
 **0.1.6-beta** is the current pre-release. Next is **1.0**.
 
 Play: [breakdown444.github.io/GrokShitSnake](https://breakdown444.github.io/GrokShitSnake/)  
-Archive: [every shipped cabinet](https://breakdown444.github.io/GrokShitSnake/play/)
+Archive: [Classic versions — play the OG](https://breakdown444.github.io/GrokShitSnake/play/)
 
 ## What it is
 

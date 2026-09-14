@@ -16,7 +16,6 @@ app.innerHTML = `
         <h1>GrokShitSnake 0.1.6-beta</h1>
         <p class="credit">Proudly presented to you by Trashbird</p>
         <p class="soul">Heart and soul edition. Next stop is 1.0.</p>
-        <p class="versions"><a href="play/">All versions</a></p>
       </div>
       <div>
         <p class="label">Best</p>
@@ -44,6 +43,9 @@ app.innerHTML = `
     </div>
 
     <p class="hint">Hold ◀ / ▶ · A / D · mouse buttons · Enter to GO · Space to pause · this is the beta</p>
+    <p class="classics">
+      <a href="play/">Classic versions — play the OG</a>
+    </p>
   </main>
 `
 

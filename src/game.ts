@@ -166,7 +166,7 @@ export class SnakeGame {
     if (this.phase !== 'playing') return false
     dt = clamp(dt, 0, 0.05)
 
-    this.heading += -this.turn * TURN_RATE * dt
+    this.heading += this.turn * TURN_RATE * dt
     const dx = Math.cos(this.heading) * this.speed * dt
     const dy = Math.sin(this.heading) * this.speed * dt
     this.head.x += dx
