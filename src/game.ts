@@ -1,74 +1,83 @@
-export type Point = { x: number; y: number }
-export type Dir = 'up' | 'down' | 'left' | 'right'
+export type Vec2 = { x: number; y: number }
 export type Phase = 'ready' | 'playing' | 'paused' | 'dead'
+export type Lump = {
+  x: number
+  y: number
+  tx: number
+  ty: number
+  r: number
+  seed: number
+  along: number
+}
 export type Stain = {
   x: number
   y: number
-  fromX: number
-  fromY: number
+  heading: number
   at: number
   seed: number
+  scale: number
 }
 
-export const COLS = 50
-export const ROWS = 50
-export const START_TICK_MS = 140
-export const MIN_TICK_MS = 70
-export const STAIN_MS = 3000
+/** Landscape playfield, world units. Wider than tall so it fits a laptop. */
+export const WORLD_W = 22
+export const WORLD_H = 12.4
+export const STAIN_MS = 3200
+export const LUMP_SPACING = 0.4
+export const START_LENGTH = 2.55
+export const START_SPEED = 4.15
+export const TURN_RATE = 3.05
 
-const OPPOSITE: Record<Dir, Dir> = {
-  up: 'down',
-  down: 'up',
-  left: 'right',
-  right: 'left',
+function clamp(n: number, a: number, b: number): number {
+  return Math.max(a, Math.min(b, n))
 }
 
-function same(a: Point, b: Point): boolean {
-  return a.x === b.x && a.y === b.y
-}
-
-function randomEmpty(occupied: Point[]): Point {
-  const free: Point[] = []
-  for (let y = 0; y < ROWS; y++) {
-    for (let x = 0; x < COLS; x++) {
-      const cell = { x, y }
-      if (!occupied.some((p) => same(p, cell))) free.push(cell)
-    }
-  }
-  return free[Math.floor(Math.random() * free.length)] ?? { x: 0, y: 0 }
+function dist2(a: Vec2, b: Vec2): number {
+  const dx = a.x - b.x
+  const dy = a.y - b.y
+  return dx * dx + dy * dy
 }
 
 export class SnakeGame {
-  snake: Point[] = []
-  food: Point = { x: 25, y: 10 }
-  dir: Dir = 'right'
-  queued: Dir | null = null
+  heading = 0
+  /** -1 left (CCW), +1 right (CW), 0 straight */
+  turn = 0
+  speed = START_SPEED
+  head: Vec2 = { x: 0, y: 0 }
+  trail: Vec2[] = []
+  lumps: Lump[] = []
+  food: Vec2 = { x: 4, y: 0 }
+  length = START_LENGTH
   phase: Phase = 'ready'
   score = 0
   highScore = Number(localStorage.getItem('grok-shit-snake-high-score') ?? '0')
-  tickMs = START_TICK_MS
   stains: Stain[] = []
+  private distSinceStain = 0
+  private traveled = 0
 
   reset(): void {
-    this.snake = [
-      { x: 20, y: 25 },
-      { x: 19, y: 25 },
-      { x: 18, y: 25 },
-    ]
-    this.dir = 'right'
-    this.queued = null
+    this.heading = 0
+    this.turn = 0
+    this.speed = START_SPEED
+    this.head = { x: -4.2, y: 0 }
+    this.length = START_LENGTH
     this.score = 0
-    this.tickMs = START_TICK_MS
-    this.food = randomEmpty(this.snake)
     this.phase = 'ready'
     this.stains = []
+    this.distSinceStain = 0
+    this.traveled = 0
+    this.trail = []
+    const n = 28
+    for (let i = 0; i < n; i++) {
+      this.trail.push({ x: this.head.x - i * 0.12, y: this.head.y })
+    }
+    this.rebuildLumps()
+    this.placeFood()
   }
 
   start(): void {
     if (this.phase === 'dead' || this.phase === 'ready') {
       this.reset()
       this.phase = 'playing'
-      this.markTrail(performance.now())
     } else if (this.phase === 'paused') {
       this.phase = 'playing'
     }
@@ -79,51 +88,117 @@ export class SnakeGame {
     else if (this.phase === 'paused') this.phase = 'playing'
   }
 
-  turn(next: Dir): void {
-    if (this.phase === 'ready') {
-      this.phase = 'playing'
-      this.markTrail(performance.now())
-    }
-    if (this.phase !== 'playing') return
-    const current = this.queued ?? this.dir
-    if (next === OPPOSITE[current]) return
-    this.queued = next
-  }
-
-  markTrail(at: number): void {
-    for (const point of this.snake) this.dropStain(point, point, at)
-  }
-
-  dropStain(point: Point, from: Point, at: number): void {
-    this.stains.push({
-      x: point.x,
-      y: point.y,
-      fromX: from.x,
-      fromY: from.y,
-      at,
-      seed: (point.x * 131 + point.y * 17 + Math.floor(at)) % 997,
-    })
-  }
-
   expireStains(now: number): void {
-    this.stains = this.stains.filter((stain) => now - stain.at < STAIN_MS)
+    this.stains = this.stains.filter((s) => now - s.at < STAIN_MS)
   }
 
-  step(now = performance.now()): boolean {
+  private placeFood(): void {
+    const pad = 1.35
+    for (let attempt = 0; attempt < 40; attempt++) {
+      const p = {
+        x: (Math.random() * 2 - 1) * (WORLD_W / 2 - pad),
+        y: (Math.random() * 2 - 1) * (WORLD_H / 2 - pad),
+      }
+      const hitBody = this.lumps.some((l) => dist2(p, l) < (l.r + 0.7) ** 2)
+      if (!hitBody && dist2(p, this.head) > 2.8) {
+        this.food = p
+        return
+      }
+    }
+    this.food = { x: 5.5, y: -2.2 }
+  }
+
+  private rebuildLumps(): void {
+    const lumps: Lump[] = []
+    if (this.trail.length < 2) {
+      this.lumps = lumps
+      return
+    }
+    let remain = 0
+    let along = 0
+    for (let i = 0; i < this.trail.length - 1 && along <= this.length; i++) {
+      const a = this.trail[i]
+      const b = this.trail[i + 1]
+      const seg = Math.hypot(a.x - b.x, a.y - b.y)
+      if (seg < 1e-6) continue
+      let t = remain
+      while (t <= seg && along <= this.length) {
+        const u = t / seg
+        const x = a.x + (b.x - a.x) * u
+        const y = a.y + (b.y - a.y) * u
+        let tx = a.x - b.x
+        let ty = a.y - b.y
+        const len = Math.hypot(tx, ty) || 1
+        tx /= len
+        ty /= len
+        const taper = 1 - (along / Math.max(this.length, 0.001)) * 0.34
+        const seed = (Math.sin(along * 17.13 + this.traveled * 0.01) * 10000) % 1
+        lumps.push({
+          x,
+          y,
+          tx,
+          ty,
+          r: 0.3 * taper * (0.88 + Math.abs(seed) * 0.28),
+          seed: Math.abs(seed),
+          along,
+        })
+        t += LUMP_SPACING
+        along += LUMP_SPACING
+      }
+      remain = t - seg
+    }
+    this.lumps = lumps
+  }
+
+  private dropStain(now: number): void {
+    this.stains.push({
+      x: this.head.x,
+      y: this.head.y,
+      heading: this.heading,
+      at: now,
+      seed: Math.random(),
+      scale: 0.55 + Math.random() * 0.55,
+    })
+    if (this.stains.length > 140) this.stains.splice(0, this.stains.length - 140)
+  }
+
+  update(dt: number, now: number): boolean {
     if (this.phase !== 'playing') return false
-    if (this.queued) {
-      this.dir = this.queued
-      this.queued = null
+    dt = clamp(dt, 0, 0.05)
+
+    this.heading += -this.turn * TURN_RATE * dt
+    const dx = Math.cos(this.heading) * this.speed * dt
+    const dy = Math.sin(this.heading) * this.speed * dt
+    this.head.x += dx
+    this.head.y += dy
+    const step = Math.hypot(dx, dy)
+    this.traveled += step
+    this.distSinceStain += step
+
+    this.trail.unshift({ x: this.head.x, y: this.head.y })
+    let kept = 0
+    let acc = 0
+    for (let i = 1; i < this.trail.length; i++) {
+      acc += Math.hypot(this.trail[i].x - this.trail[i - 1].x, this.trail[i].y - this.trail[i - 1].y)
+      kept = i
+      if (acc > this.length + 1.2) break
+    }
+    this.trail.length = Math.max(2, kept + 1)
+
+    this.rebuildLumps()
+
+    const hw = WORLD_W / 2 - 0.32
+    const hh = WORLD_H / 2 - 0.32
+    const hitWall = Math.abs(this.head.x) > hw || Math.abs(this.head.y) > hh
+    let hitSelf = false
+    for (let i = 8; i < this.lumps.length; i++) {
+      const l = this.lumps[i]
+      if (dist2(this.head, l) < (l.r * 0.78 + 0.12) ** 2) {
+        hitSelf = true
+        break
+      }
     }
 
-    const head = this.snake[0]
-    const next: Point = {
-      x: head.x + (this.dir === 'left' ? -1 : this.dir === 'right' ? 1 : 0),
-      y: head.y + (this.dir === 'up' ? -1 : this.dir === 'down' ? 1 : 0),
-    }
-
-    const hitWall = next.x < 0 || next.x >= COLS || next.y < 0 || next.y >= ROWS
-    const hitSelf = this.snake.some((p) => same(p, next))
     if (hitWall || hitSelf) {
       this.phase = 'dead'
       if (this.score > this.highScore) {
@@ -133,18 +208,19 @@ export class SnakeGame {
       return false
     }
 
-    this.snake.unshift(next)
-    this.dropStain(next, head, now)
-    let ate = false
-    if (same(next, this.food)) {
-      ate = true
-      this.score += 10
-      this.tickMs = Math.max(MIN_TICK_MS, START_TICK_MS - Math.floor(this.score / 40) * 8)
-      this.food = randomEmpty(this.snake)
-    } else {
-      this.snake.pop()
+    if (this.distSinceStain > 0.22) {
+      this.dropStain(now)
+      this.distSinceStain = 0
     }
     this.expireStains(now)
-    return ate
+
+    if (dist2(this.head, this.food) < 0.48 ** 2) {
+      this.score += 10
+      this.length += 0.52
+      this.speed = Math.min(6.4, START_SPEED + this.score * 0.012)
+      this.placeFood()
+      return true
+    }
+    return false
   }
 }

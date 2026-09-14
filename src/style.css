@@ -1,25 +1,23 @@
 :root {
   color-scheme: dark;
-  --bg: #040a07;
-  --panel: #0d1c14;
-  --line: rgba(61, 255, 138, 0.22);
-  --text: #d7ffe8;
-  --muted: #7da38d;
+  --bg: #07080a;
+  --plastic: #1a1d22;
+  --plastic-2: #11141a;
+  --line: rgba(90, 220, 170, 0.28);
+  --text: #e7fff4;
+  --muted: #7f9a8c;
   --accent: #3dff8a;
-  --danger: #ff4d6d;
+  --bezel: #0b1f18;
   font-family: "Segoe UI", "Trebuchet MS", sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   min-height: 100%;
   background:
-    radial-gradient(circle at top, #163324 0%, transparent 42%),
+    radial-gradient(ellipse at 50% 0%, #243044 0%, transparent 52%),
     var(--bg);
   color: var(--text);
 }
@@ -28,101 +26,109 @@ body {
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  padding: 16px;
+  padding: 10px 12px;
 }
 
 #app {
-  width: min(100%, 1280px);
+  width: min(1080px, 96vw);
 }
 
-.cabinet {
+.handheld {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 28%),
-    linear-gradient(180deg, #1a3224, #0c1610 55%, #08110c);
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  padding: 20px 20px 14px;
+    linear-gradient(180deg, rgba(255,255,255,0.06), transparent 30%),
+    linear-gradient(90deg, #2a2e36, var(--plastic) 18%, var(--plastic) 82%, #15181e);
+  border: 1px solid #3a404c;
+  border-radius: 36px;
+  padding: 12px 14px 10px;
   box-shadow:
-    0 0 0 1px #050c08,
-    0 28px 70px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    inset 0 -18px 40px rgba(0, 0, 0, 0.18);
+    0 0 0 2px #0a0c10,
+    0 22px 50px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  max-height: 96dvh;
+  display: flex;
+  flex-direction: column;
 }
 
 .hud {
   display: grid;
-  grid-template-columns: minmax(64px, 1fr) minmax(0, 2.4fr) minmax(64px, 1fr);
+  grid-template-columns: minmax(56px, 1fr) minmax(0, 2.6fr) minmax(56px, 1fr);
   align-items: end;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
-.titleblock {
-  text-align: center;
-}
+.titleblock { text-align: center; }
 
 .hud h1 {
   margin: 0;
-  letter-spacing: 0.02em;
-  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  font-size: 1.05rem;
   font-weight: 800;
-  line-height: 1.15;
   color: var(--accent);
-  text-wrap: balance;
 }
 
-.credit {
-  margin: 4px 0 0;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--muted);
-  text-wrap: balance;
-}
-
-.versions {
-  margin: 6px 0 0;
+.credit, .versions {
+  margin: 3px 0 0;
   font-size: 0.68rem;
+  color: var(--muted);
 }
 
-.versions a {
-  color: var(--accent);
-}
+.versions a { color: var(--accent); }
 
-.hud > div:last-child {
-  text-align: right;
-}
+.hud > div:last-child { text-align: right; }
 
 .label {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
 .value {
-  margin: 2px 0 0;
+  margin: 1px 0 0;
   font-variant-numeric: tabular-nums;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 700;
+}
+
+.gear {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) 86px;
+  gap: 10px;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+
+.wing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
 }
 
 .screen {
   position: relative;
-  border-radius: 18px;
+  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid var(--line);
-  background: #07140c;
+  border: 10px solid #07140f;
+  background: #07140f;
   box-shadow:
-    inset 0 18px 40px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(0, 0, 0, 0.4);
+    inset 0 0 0 2px #1f6a4a,
+    0 0 0 1px #050a08;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-height: calc(100dvh - 158px);
+  min-height: 0;
+  justify-self: center;
 }
 
 canvas {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   touch-action: none;
 }
 
@@ -135,17 +141,16 @@ canvas {
   justify-items: center;
   gap: 8px;
   text-align: center;
-  background: rgba(4, 10, 7, 0.62);
+  background: rgba(6, 10, 8, 0.58);
   backdrop-filter: blur(2px);
+  padding: 12px;
 }
 
-.overlay.hidden {
-  display: none;
-}
+.overlay.hidden { display: none; }
 
 #overlay-title {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: 1.45rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -153,63 +158,68 @@ canvas {
 #overlay-sub {
   margin: 0;
   color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.pad {
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.pad-mid {
-  display: grid;
-  grid-template-columns: 64px 72px 64px;
-  gap: 8px;
+  font-size: 0.9rem;
+  max-width: 36ch;
 }
 
 button {
   appearance: none;
-  border: 1px solid var(--line);
-  background: #102218;
+  border: 1px solid #4a5160;
+  background: radial-gradient(circle at 30% 30%, #3a404c, #232730);
   color: var(--text);
-  border-radius: 14px;
-  min-height: 48px;
-  min-width: 64px;
+  border-radius: 999px;
+  width: 64px;
+  height: 64px;
   font: inherit;
+  font-weight: 800;
   cursor: pointer;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.12), 0 4px 0 #0c0e12;
 }
 
 button:active {
-  transform: translateY(1px);
-  background: #163224;
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 0 rgba(0,0,0,0.3);
+}
+
+#turn-left, #turn-right {
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
 }
 
 #action {
-  background: var(--accent);
-  color: #06210f;
-  font-weight: 800;
+  background: linear-gradient(180deg, #ffe56a, #e0b000);
+  color: #2a2000;
+  border-color: #c9a000;
+  width: 58px;
+  height: 42px;
+  border-radius: 12px;
   letter-spacing: 0.08em;
 }
 
 .hint {
-  margin: 12px 0 2px;
+  margin: 8px 0 2px;
   text-align: center;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
 }
 
-@media (max-width: 640px) {
-  .hud h1 {
-    font-size: 0.95rem;
+@media (max-width: 720px) {
+  .gear {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
   }
+  .wing.left, .wing.right {
+    flex-direction: row;
+    order: 2;
+  }
+  .screen { order: 1; }
+  .wing.right { margin-top: -4px; }
+  .hint { display: none; }
+  .hud h1 { font-size: 0.88rem; }
+}
 
-  .credit {
-    font-size: 0.62rem;
-  }
-
-  .hint {
-    display: none;
-  }
+@media (max-height: 700px) {
+  .handheld { padding: 8px 10px 6px; border-radius: 24px; }
+  .hud { margin-bottom: 4px; }
+  .value { font-size: 1.05rem; }
 }

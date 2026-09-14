@@ -1,7 +1,7 @@
 {
   "name": "grok-shit-snake",
   "private": true,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 43180",
@@ -9,7 +9,11 @@
     "preview": "vite preview --host 0.0.0.0 --port 43180"
   },
   "devDependencies": {
+    "@types/three": "^0.186.0",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "three": "^0.186.0"
   }
 }
